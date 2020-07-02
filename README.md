@@ -8,14 +8,14 @@ Las emergencias son situaciones donde ocurren circunstancias que incluso llegan 
 
 ### Prerequisites (Model)
 
-Pandas (Versión 0.25.1)
-Numpy (Versión 1.16.5)
-Matplotlib (Versión 3.2.1)
-Scikit-Learn (Versión 0.21)
-Bingmaps (Versión 0.3.7)
+* Pandas (Versión 0.25.1)
+* Numpy (Versión 1.16.5)
+* Matplotlib (Versión 3.2.1)
+* Scikit-Learn (Versión 0.21)
+* Bingmaps (Versión 0.3.7)
 
 ```
-pip install pandas
+pip install pandas (Dependencies for testing with Jupyter Notebooks)
 ```
 
 ### Prerequisites (App)
@@ -30,37 +30,47 @@ pip install pandas
 
 
 ```
-npm install or can be installed added with CDN
+Can be installed by using CDN (included)
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+You can start by accesing to Hospitals Nearb-AI-Me-APP.
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+Run an Enviroment with Python 3.8.3
 
 ```
-until finished
+$ pip install -r requirements.txt
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Model your dataset according to the features of your data.
+
+```
+python manage.py migrate
+```
+
+Configure and match the main view´s algorithm (ML model) with your model(Database).
+Add your Bing-Maps key.
+
+```
+bing = pybingmaps.Bing('Your key')
+
+```
+(Front-end) Confirm your coordinate obtainers or set the values in the buttons.
+
+```
+python manage.py runserver
+```
 
 
 
 ## Deployment
 
-Heroku
+You can follow the Deployment tutorial for python by consulting [here](https://www.heroku.com/python)
 
+## Demo (Auto coordinate obainer and tracking, only in Guadalajara)
 
-
-
-
+You can run the application (With manual coords due dataset limitations) by clicking [here](https://movilizate.herokuapp.com/)
 
 
 ## License
@@ -71,11 +81,11 @@ This project is licensed under GNU GENERAL PUBLIC LICENSE
 
 ### Mentor
 
-* **Inés Zetter** - *Initial work* - [](https://github.com/)
+* **Inés Zetter** - [](https://github.com/)
 
 
-* **Zaira Martínez** - *Initial work* - [zcmartinez](https://github.com/zcmartinez)
-* **Jorge Farfán** - *Initial work* - [JFarfanPerdomo](https://github.com/JFarfanPerdomo)
-* **Luis Chitala** - *Initial work* - [luischitala](https://github.com/luischitala)
+* **Zaira Martínez** - [zcmartinez](https://github.com/zcmartinez)
+* **Jorge Farfán** -  [JFarfanPerdomo](https://github.com/JFarfanPerdomo)
+* **Luis Chitala** -  [luischitala](https://github.com/luischitala)
 
 
