@@ -1,12 +1,12 @@
-# Hospitals Nearb-AI Me
+# Hospitals Nearb-AI Me :hospital: :syringe:
 
 Optimización de traslados a clínicas de emergencia.
 
-## About 
+## About :books:
 
 Las emergencias son situaciones donde ocurren circunstancias que incluso llegan a poner en riesgo la vida. Aún así estas situaciones son muy comunes en la cotidianidad, registrándose en los primeros tres meses del año actual en México más de 500 mil llamadas médicas. Ante esto, se vuelve necesario encontrar métodos que nos ayuden a mitigar esta problemática. Por otro lado, los métodos de Machine Learning nos han mostrado soluciones óptimas en variedad de situaciones, por lo que en este trabajo se usan los métodos “Unsupervised Nearest Neighbors Clustering” y “Bayesian Ridge Regression” para encontrar los hospitales ideales para el usuario con base en la distancia y el tiempo de traslado, los consultorios y cantidad de médicos en estos. Además, se desarrolló una aplicación web con Django para la interfaz del usuario con el objetivo de que la aplicación fuera más personalizada y que pudiera ser consultada en un teléfono móvil. 
 
-### Prerequisites (Model)
+### Prerequisites (Model) 
 
 * Pandas (Versión 0.25.1)
 * Numpy (Versión 1.16.5)
@@ -75,16 +75,16 @@ The algorithm works with a main dataset "Master_Dataset_AI_Saturday.xlsx" found 
 
 ## Deployment
 
-You can follow the Deployment tutorial for python by consulting [here](https://www.heroku.com/python)
+You can follow the Deployment tutorial for python by consulting [here](https://www.heroku.com/python).
 
 ## Demo (Auto coordinate obtainer and tracking, only in Guadalajara)
 
-You can run the application (With manual coords due dataset limitations) by clicking [here](https://movilizate.herokuapp.com/)
+You can run the application (With manual coords due dataset limitations) by clicking [here](https://movilizate.herokuapp.com/).
 
 
 ## License
 
-This project is licensed under GNU GENERAL PUBLIC LICENSE
+This project is licensed under GNU GENERAL PUBLIC LICENSE.
 
 
 
