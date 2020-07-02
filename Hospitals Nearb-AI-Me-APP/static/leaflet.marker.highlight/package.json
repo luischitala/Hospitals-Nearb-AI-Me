@@ -1,0 +1,58 @@
+{
+  "_from": "leaflet.marker.highlight",
+  "_id": "leaflet.marker.highlight@0.0.3",
+  "_inBundle": false,
+  "_integrity": "sha1-x4gYZsUrcIyO7c9UCCrPYt/deNQ=",
+  "_location": "/leaflet.marker.highlight",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "leaflet.marker.highlight",
+    "name": "leaflet.marker.highlight",
+    "escapedName": "leaflet.marker.highlight",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/leaflet.marker.highlight/-/leaflet.marker.highlight-0.0.3.tgz",
+  "_shasum": "c7881866c52b708c8eedcf54082acf62dfdd78d4",
+  "_spec": "leaflet.marker.highlight",
+  "_where": "C:\\Users\\lrchi\\Desktop\\movapp",
+  "author": {
+    "name": "brandonxiang"
+  },
+  "bugs": {
+    "url": "https://github.com/brandonxiang/leaflet.marker.hightlight/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Highlight performance for L.marker",
+  "homepage": "https://github.com/brandonxiang/leaflet.marker.hightlight#readme",
+  "keywords": [
+    "leaflet",
+    "highlight",
+    "marker"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "leaflet.marker.highlight",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonxiang/leaflet.marker.hightlight.git"
+  },
+  "scripts": {
+    "build": "npm run build-js && npm run build-css && npm run compress-js && npm run compress-css",
+    "build-css": "cat  index.css > ./dist/leaflet.marker.highlight-src.css",
+    "build-js": "cat  index.js > ./dist/leaflet.marker.highlight-src.js",
+    "compress-css": "uglifycss ./dist/leaflet.marker.highlight-src.css > ./dist/leaflet.marker.highlight.css",
+    "compress-js": "uglifyjs ./dist/leaflet.marker.highlight-src.js -o ./dist/leaflet.marker.highlight.js -m",
+    "dev": "browser-sync start --server --files \"**/*.html,**/*.css,**/*.js\"",
+    "release": "git push origin master && git checkout gh-pages && git merge master && git push origin gh-pages && git checkout master && npm publish"
+  },
+  "version": "0.0.3"
+}

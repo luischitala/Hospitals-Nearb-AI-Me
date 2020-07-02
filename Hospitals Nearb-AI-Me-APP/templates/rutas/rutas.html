@@ -1,0 +1,382 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_content %}
+
+<title>Bienvenido a Movilízate</title>
+{% load static %}
+<!-- Leaflet -->
+
+ 
+{% endblock%}
+
+    
+{% block container %}
+    
+   <div class="row">
+    <div class="col" id="contmapa">
+        
+        <div id="myMap" style="height: 850px; width:2295px "></div>
+        
+        <!-- height: 1300px; width:1100px; -->
+   </div>
+   </div>
+   <div class="row" ">
+       <div class="col-4" style="padding-top:50px; padding-left:50px;">
+        <div class="form-group row">
+                <form  class="form" method="POST" action="resultado" id="datosa" >
+                        {% csrf_token %}
+                        <input class="form-control" id="lating" type="hidden" name="lating" required>
+                        <input type="hidden" name="lnging" class="form-control" id="lnging" required>
+
+                        <button id="autopos" type="submit" class="btn btn-primary btn-block">Hospital más cercano!</button>
+                </form>
+                <div style="padding-left: 20px;"><button class="btn btn-primary btn" onclick="ClearFields();">Consultar manualmente</button></div>
+                
+       </div>
+       </div>
+        <div class="col-2">
+            <div class="form-group row">
+                <div class="col-xs-4">
+                    <form  class="form" id="form1" method="POST" action="resultado">
+                    
+                    <div class="col-xs-4">
+                        {% csrf_token %}
+                        <label for="latitud">Latitud</label>
+                        <input class="form-control" type="number" min="20.300000" step="any"  name="lating" id="slat" required>
+                        <label for="longitud">Longitud</label>
+                        <input type="number" min="" step="any"  name="lnging" class="form-control" id="slng" required >
+                        <div class="row">
+                          <div style="padding-top: 10px; padding-left: 14px;">
+                            <button type="submit" class="btn btn-primary" >Consultar!</button>
+                            </div>
+                            <div style="padding-top: 10px; padding-left: 10px;">
+                            <button type="button" class="btn btn-primary" onclick="clearset();" id="">Limpiar</button>
+                            </div>
+                        </div>
+                        <!-- <input id="ingmodelo" type="button" value="Buscar!" class="btn btn-primary btn-lg btn-block" /> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-4">
+            <!-- <div class="selector">
+                <select name="select-location" id="select-location">
+                    <option value="-1">Selecciona uno...</option>
+                    <option value="20.677041,-103.347745">Guadalajara</option>
+                    <option value="20.518943,-103.177678">El Salto</option>
+                    <option value="20.475683,-103.446807">Tlajomulco</option>
+                    <option value="20.639715,-103.311846">Tlaquepaque</option>
+                    <option value="20.720995,-103.391026">Zapopan</option>
+                    <option value="20.624105,-103.242329">Tonalá</option>
+                </select>
+            </div> -->
+            <div class="row">
+              <div class="btn-toolbar" role="toolbar" style="padding-top: 20px;">
+                <div class="btn-group mr-2" role="group">
+                  <button class="btn btn-primary" onclick="guadalajara();" id="guadalajara">Guadalajara</button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                  <button class="btn btn-primary" onclick="elsalto();" id="elsalto">El Salto</button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                  <button class="btn btn-primary" onclick="tlaquepaque();" id="tlaquepaque">Tlaquepaque</button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                  <button class="btn btn-primary" onclick="tlajomulco();" id ="tlajomulco">Tlajomulco</button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                  <button class="btn btn-primary" onclick="tonala();" id="tonala">Tonalá</button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                  <button class="btn btn-primary" onclick="zapopan();" id="zapopan">Zapopan</button>
+                </div>
+              </div>
+            </div>
+            
+        
+        </div>
+   <!-- Jquery UI -->
+   <script src="{% static 'jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+   <!-- Search box -->
+   <script src="{% static 'leaflet-custom-searchbox/dist/leaflet.customsearchbox.min.js'%}"></script>
+   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+   <script src="{% static 'js/leaflet.extra-markers.min.js' %}"></script>
+   <script src="{% static 'js/routing/leaflet-routing-machine.min.js' %}"></script>
+   <script src="{% static 'js/output.js' %}"></script>
+   <script src="{% static 'js/script_blank.js'%}"></script>
+   <script src="{% static 'js/movilizate.js' %}"></script>
+   <div class="loader hidden" id="loader">
+        <img src="{% static "img/carga.gif" %}" alt="">
+   </div>
+   <script> 
+     //Cargar la animación en el formulario
+    $(document).ready(function(){
+        $("#datosa").on("submit", function(){
+            var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+            mapa.remove()
+            //const loader = document.querySelector(".loader");
+            //loader.className -= " hidden";
+        });//submit
+      });//document ready
+
+      $(document).ready(function(){
+        $("#form1").on("submit", function(){
+            var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+            mapa.remove()
+            //const loader = document.querySelector(".loader");
+            //loader.className -= " hidden";
+        });//submit
+      });//document ready
+
+      function myFunction() {
+        var element = document.getElementById("myDIV");
+        element.classList.remove("mystyle");
+      }
+
+      //movSelector();
+    //Obtención de coordenadas
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+        
+        function success(pos) {
+          var crd = pos.coords;
+          console.log(pos);         
+          console.log('Your current position is:');
+          console.log('Latitude : ' + crd.latitude);
+          console.log('Longitude: ' + crd.longitude);
+          console.log('More or less ' + crd.accuracy + ' meters.');
+          latitud = parseFloat(crd.latitude);
+          longitud = parseFloat(crd.longitude);
+          $('#lating').val(latitud);
+          $('#lnging').val(longitud);
+          var latitud;
+          var longitud;
+          console.log(latitud);
+          console.log(longitud);
+          if(latitud == null){
+            Swal.fire({
+              title: 'Lo sentimos :',
+              text: 'Necesitamos de su localización para funcionar',
+              icon: 'error',
+              confirmButtonText: 'Encender Gps'
+            });
+
+
+            //document.getElementById("autopos").remove();
+            setTimeout(function(){
+              location = ''
+            },30000)
+          }
+          else{
+            Swal.fire({
+              title: 'Listo!',
+              text: 'Estamos listos',
+              icon: 'success',
+              confirmButtonText: 'Recomendar Hospital!'
+            });
+          }
+          
+        }
+        
+        function error(err) {
+          console.warn('ERROR(' + err.code + '): ' + err.message);
+          
+        };
+        navigator.geolocation.getCurrentPosition(success, error, options);
+    </script>
+    <!-- Eliminación de coordenadas automáticas -->
+    <script>
+      function ClearFields() {
+
+        document.getElementById("lating").value = "";
+        document.getElementById("lnging").value = "";
+   }
+    </script>
+    <script>
+      document.getElementById("autopos").addEventListener("click", function(event){
+       //Validador de coordenadas Frontend 
+        var vlatitud = $("#lating").val();
+        var vlongitud = $("#lnging").val();
+        console.log(vlatitud,vlongitud);
+        if (vlatitud != '' && vlatitud != null){
+            
+        }else{
+          e.preventDefault();
+          Swal.fire({
+            title: 'Alto!',
+            text: 'Necesitamos de su localización para funcionar :U',
+            icon: 'error',
+            confirmButtonText: 'Encender Gps'
+          });
+          return false;
+        }
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+
+         var searchboxControl=createSearchboxControl();
+         var control = new searchboxControl({
+             sidebarTitleText: 'Movilízate',
+             sidebarMenuItems: {
+                 Items: [
+                     { type: "link", name: "Tips para Emergencias", href: "http://github.com", icon: "icon-local-carwash" },
+                     { type: "link", name: "Configura tu clínica asignada", href: "http://google.com", icon: "icon-cloudy" },
+                     { type: "button", name: "Button 1", onclick: "alert('button 1 clicked !')", icon: "icon-potrait" },
+                     { type: "button", name: "Button 2", onclick: "button2_click();", icon: "icon-local-dining" },
+                     { type: "link", name: "Link 3 (stackoverflow.com)", href: 'http://stackoverflow.com', icon: "icon-bike" },
+                 ]
+             }
+         });
+         control._searchfunctionCallBack = function (searchkeywords)
+         {
+             if (!searchkeywords) {
+                 searchkeywords = "The search call back is clicked !!"
+             }
+             alert(searchkeywords);
+         }
+         myMap.addControl(control);
+     });
+     
+     function button2_click()
+     {
+         alert('button 2 clicked !!!');
+     }
+     </script>
+     <!-- Aplicación de botones -->
+     <script>
+      function guadalajara() {
+
+        var glating = 20.677041;
+        var glnging = -103.347745;
+
+        document.getElementById("slat").value = glating;
+        document.getElementById("slng").value = glnging;
+        document.getElementById("form1").submit();
+       
+         
+      }
+      $("#guadalajara").on("click", function(){
+        var element = document.getElementById("loader");
+        element.classList.remove("hidden");
+        var mapa = document.getElementById("contmapa");
+        mapa.remove()
+        //const loader = document.querySelector(".loader");
+        //loader.className -= " hidden";
+        });//submit
+      function elsalto(){
+
+        var glating = 20.518943;
+        var glnging = -103.177678;
+          
+        document.getElementById("slat").value = glating;
+        document.getElementById("slng").value = glnging;
+        document.getElementById("form1").submit();        
+        var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+      }
+      $("#elsalto").on("click", function(){
+        var element = document.getElementById("loader");
+        element.classList.remove("hidden");
+        var mapa = document.getElementById("contmapa");
+        mapa.remove()
+        //const loader = document.querySelector(".loader");
+        //loader.className -= " hidden";
+        });//submit
+      function tlaquepaque(){
+
+        var glating = 20.639715;
+        var glnging = -103.311846;
+          
+        document.getElementById("slat").value = glating;
+        document.getElementById("slng").value = glnging;
+        document.getElementById("form1").submit();
+        var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+      }
+      $("#tlaquepaque").on("click", function(){
+        var element = document.getElementById("loader");
+        element.classList.remove("hidden");
+        var mapa = document.getElementById("contmapa");
+        mapa.remove()
+        //const loader = document.querySelector(".loader");
+        //loader.className -= " hidden";
+        });//submit
+      function tlajomulco(){
+
+        var glating = 20.475683;
+        var glnging = -103.446807;
+          
+        document.getElementById("slat").value = glating;
+        document.getElementById("slng").value = glnging;
+        document.getElementById("form1").submit();
+        var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+      }
+      $("#tlajomulco").on("click", function(){
+        var element = document.getElementById("loader");
+        element.classList.remove("hidden");
+        var mapa = document.getElementById("contmapa");
+        mapa.remove()
+        //const loader = document.querySelector(".loader");
+        //loader.className -= " hidden";
+        });//submit
+      function tonala(){
+
+        var glating = 20.624105;
+        var glnging = -103.242329;
+          
+        document.getElementById("slat").value = glating;
+        document.getElementById("slng").value = glnging;
+        document.getElementById("form1").submit();
+        var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");       
+      }
+      $("#tonala").on("click", function(){
+        var element = document.getElementById("loader");
+        element.classList.remove("hidden");
+        var mapa = document.getElementById("contmapa");
+        mapa.remove()
+        //const loader = document.querySelector(".loader");
+        //loader.className -= " hidden";
+        });//submit
+      function zapopan(){
+        
+        var glating = 20.720995;
+        var glnging = -103.391026;
+
+        document.getElementById("slat").value = glating;
+        document.getElementById("slng").value = glnging;
+        document.getElementById("form1").submit();          
+        var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+      }
+      $("#zapopan").on("click", function(){
+        var element = document.getElementById("loader");
+        element.classList.remove("hidden");
+        var mapa = document.getElementById("contmapa");
+        mapa.remove()
+        //const loader = document.querySelector(".loader");
+        //loader.className -= " hidden";
+        });//submit
+      function clearset() {
+
+        document.getElementById("slat").value = "";
+        document.getElementById("slng").value = "";
+      }
+     </script>
+{% endblock %}

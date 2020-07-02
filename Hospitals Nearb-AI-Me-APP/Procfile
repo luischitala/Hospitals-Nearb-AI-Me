@@ -1,0 +1,1 @@
+web: gunicorn movapp.wsgi --log-file -

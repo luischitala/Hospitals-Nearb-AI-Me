@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+
+<title>Bienvenido a Movilízate</title>
+{% load static %}
+   
+    <!-- EStilos -->
+    {% endblock%}        
+    {% block container %}
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar collapsed" style="height:650px;">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#perfil" role="tab"><i class="fa fa-clock"></i></a></li>
+                <li><a href="#rutas" role="tab"><i class="fa fa-user"></i></a></li>
+                <li><a href="{% url 'busqueda' %}" role="tab"><i class="fa fa-arrow-left"></i></a></li>
+            </ul>
+
+            <ul role="tablist">
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 class="sidebar-header">
+                    Ruta
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <div id="controls"></div>
+    
+            </div>
+
+            <div class="sidebar-pane controls" id="perfil">
+                <h1 class="sidebar-header">Buscar nuevos resultados
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <form action="resultado" method="POST" >
+                    <div style="height:20px;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" id="lating" name="lating">
+                    <input type="hidden" id="lnging" name="lnging">
+                    <button type="submit" class="btn btn-primary" >Recalcular mi posición</button>
+                </form>
+            </div>
+            <div class="sidebar-pane" id="rutas">
+                <h1 class="sidebar-header">
+                    Ajustes de parámetros
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <form action="" class="form-group" style="padding-top: 20px;">
+                    <label for="tiempo" >Preferencia en tiempo</label>
+                    <input type="number" class="form-control" id="tiempo" style="width: 200px;">
+                    <label for="distancia" >Preferencia en distancia</label>
+                    <input type="number" class="form-control" id="distancia" style="width: 200px;">
+                    <label for="consultorios" >Preferencia en consultorios</label>
+                    <input type="number" class="form-control" id="consultorios" style="width: 200px;">
+                    <label for="medicos" >Preferencia en médicos</label>
+                    <input type="number" class="form-control" id="medicos" style="width: 200px;">
+                    <button class="btn btn-primary" id="mySubmit">Ajustar Parámetros</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Row para el mapa-->
+    <div class="row">
+        <div class="col" style="padding-right: -10px;">
+            <div class="main-wrapper">
+            <div id="bar">
+                <!-- Row para las tarjetas -->
+            <div class="row" id="" >
+                <div class="col col-4 col-md-offset-2" id="res0" style="padding-left:600px">        
+                </div>
+                <div class="col col-4 col-md-offset-2" id="res1" style="padding-left: 320px; padding-right:300px">        
+                </div>
+                <div class="col col-4 col-md-offset-2" id="res2" style="padding-right: 700px">        
+                </div>
+            </div>
+            </div>
+            <div id="myMap" class="sidebar-map" style="height: 1110px; width:2295px" style="padding-right: 0px;">
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Liberías: Leaflet, Enrutamiento, GeoJson dataset sidebar-->
+ <script src="{% static 'sidebar-v2-master/js/leaflet-sidebar.js' %}"></script>
+ <!-- Control bar -->
+ <script src="{% static 'leaflet-control-bar/src/L.Control.Bar.js' %}"></script>
+ <!-- Jquery UI -->
+ <script src="{% static 'jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+ <!-- Search box -->
+ <script src="{% static 'leaflet-custom-searchbox/dist/leaflet.customsearchbox.min.js'%}"></script>
+ <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+ <script src="{% static 'js/leaflet.extra-markers.min.js' %}"></script>
+ <script src="{% static 'js/routing/leaflet-routing-machine.min.js' %}"></script>
+ <script src="{% static 'js/output.js' %}"></script>
+ <script src="{% static 'js/script_blank.js'%}"></script>
+ <script src="{% static 'js/movilizate.js' %}"></script>
+ <!-- //Control bar para activar contenedor de tarjetas -->
+    <script>
+        //Control bar para activar contenedor de tarjetas
+        var controlBar = L.control.bar('bar',{
+            position:'bottom',
+            visible:true
+        });
+        myMap.addControl(controlBar);
+
+        //Inicio de sidebar
+        var sidebar = L.control.sidebar('sidebar').addTo(myMap);
+        //Verificación de la obtención del resultado de modelo 
+        console.log({{ hcf|safe }})
+        //Obtención de coordenadas
+        
+        console.log('Chi cheñol');
+        //Importación de variables para correr 
+        var latitude = "{{latitude}}";
+        var longitude = "{{longitude}}";
+
+        var hospitales = {{ hcf|safe }};
+        var dlatitude = hospitales[0].LATITUD;
+        var dlongitude = hospitales[0].LONGITUD;
+        //Función de centrado
+        center(latitude,longitude);
+        console.log(latitude,longitude)
+
+        Swal.fire({
+            title: 'Listo!',
+            text: 'Hemos encontrado opciones cerca de usted',
+            icon: 'success',
+            confirmButtonText: 'Continuar'
+          });
+    </script>
+    <!-- Ciclo para colocar los íconos -->
+    <script>
+        //Ciclo para colocar los íconos
+        for (i=0;i<3;i++){
+            var hospitales = {{ hcf|safe }};
+            if(i==0){
+            //Modificaciones aplicables para la primera opción
+            mname = hospitales[i].NOMBRE_DE_LA_UNIDAD;
+            mlatitude = hospitales[i].LATITUD;
+            mlongitude = hospitales[i].LONGITUD;
+            hospitalmarker1(mlatitude,mlongitude);
+            }
+            else if(i==1) {
+                //Para el resto
+                mname = hospitales[i].NOMBRE_DE_LA_UNIDAD;
+                mlatitude = hospitales[i].LATITUD;
+                mlongitude = hospitales[i].LONGITUD;
+                hospitalmarker2(mlatitude,mlongitude); 
+            }else{
+                mname = hospitales[i].NOMBRE_DE_LA_UNIDAD;
+                mlatitude = hospitales[i].LATITUD;
+                mlongitude = hospitales[i].LONGITUD;
+                hospitalmarker3(mlatitude,mlongitude);
+            }
+        }
+    </script>
+      <!-- Script para mostrar la información de las tarjetas -->
+    <script>
+        var hospitales = {{ hcf|safe }};       
+        for(i=0;i<3;i++){
+            var nombre = hospitales[i].NOMBRE_DE_LA_UNIDAD;
+            if(i==0){
+                let tarjetas = `<div class="card card-hover border-0 rounded img-fluid position-relative zoom" style="border-radius:25px; height:400px; width:300px; padding-left:30px; padding-right:10px;  background-image: url('{% static 'img/green.png' %}'); max-height:400px; max-width:280px;" >
+                    <div class="card-body" style="padding-top: -5px; z-index:2; position-absolute">
+                    <div class="row t-info" >
+                        <div class="col-4"  >
+                            <span class="fcircular" >
+                            <img src="{% static 'img/descarga.png' %}" class="rounded-circle z-depth-2 shadow" height="55" width="55" alt="100x100" style="padding-bottom: 5px;">
+                            </span>
+                        </div>
+                            <div class="col-8" padding-right="0">
+                            
+                            <div class="row"> 
+                                <div class="col-3" style="color:white">3</h7></div>
+                                <div class="col-9 d-flex justify-content-end" style="padding: top 25;">  
+                                    <div class="row" style="padding-top: 4px;">
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:grey"></i>
+                                        <i class="fas fa-star" style="color:grey"></i>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="row" style="height:100px;">
+                            <h5 class="t-tarjeta" style="font-size: 15px; padding-left: 15px; padding-top:10px; color:white;">`+ nombre +`</h5>
+                            </div>
+                            </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col" style="max-height: 50px;">
+                            <div class="tb-tarjeta rounded" style="background-color: #00d74e; ">
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Disponible en urgencias </h5>
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Servicio 24 horas</h5>
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Equipamento completo</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="padding-top: 20px; text-align:center;">
+                            <button class="btn btn-light shadow btne" style="font-size: 10px; display:inline-block;">REGISTRAR EMERGENCIA</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul style="padding-left: 0; padding-top:10px; ">
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">ESPECIALIDADES</a></li>
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">SERVICIOS</a></li>
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">PRECIOS</a></li>
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">CONTACTO</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                </div>`;
+                document.getElementById('res'+[i]).innerHTML= tarjetas;
+            }
+            else if (i == 1){
+                let tarjetas = `<div class="card card-hover border-0 border-secondary rounded img-fluid position-relative zoom" style=" height:400px; width:300px; padding-left:30px; padding-right:10px;  background-image: url('{% static 'img/view.png' %}'); max-height:400px; max-width:280px;" >
+                    <div class="card-body" style="padding-top: -5px; z-index:2; position-absolute">
+                    <div class="row t-info">
+                        <div class="col-4"  >
+                            <span class="fcircular" >
+                            <img src="{% static 'img/descarga.png' %}" class="rounded-circle z-depth-2 shadow" height="55" width="55" alt="100x100" style="padding-bottom: 5px;">
+                            </span>
+                        </div>
+                            <div class="col-8" padding-right="0">
+                            
+                            <div class="row"> 
+                                <div class="col-3" style="color:black">3</h7></div>
+                                <div class="col-9 d-flex justify-content-end" style="padding: top 25;">  
+                                    <div class="row" style="padding-top: 4px;">
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:grey"></i>
+                                        <i class="fas fa-star" style="color:grey"></i>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="row" style="height:100px;">
+                            <h5 class="t-tarjeta" style="font-size: 15px; padding-left: 15px; padding-top:10px; color:black;">`+ nombre +`</h5>
+                            </div>
+                            </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col" style="max-height: 50px;">
+                            <div class="tb-tarjeta rounded" style="background-color: #00d74e;">
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Disponible en urgencias </h5>
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Servicio 24 horas</h5>
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Equipamento completo</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="padding-top: 20px; text-align:center;">
+                            <button class="btn btn-light shadow btne" style="font-size: 10px; display:inline-block;">REGISTRAR EMERGENCIA</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul style="padding-left: 0; padding-top:10px; ">
+                                <li style="list-style-type: none;"><a style="color: black; text-decoration:none;">ESPECIALIDADES</a></li>
+                                <li style="list-style-type: none;"><a style="color: black; text-decoration:none;">SERVICIOS</a></li>
+                                <li style="list-style-type: none;"><a style="color: black; text-decoration:none;">PRECIOS</a></li>
+                                <li style="list-style-type: none;"><a style="color: black; text-decoration:none;">CONTACTO</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                </div>`;
+                document.getElementById('res'+[i]).innerHTML= tarjetas;
+            }
+            else{
+                let tarjetas = `<div class="card card-hover border-0 border-secondary rounded img-fluid position-relative zoom" style=" height:400px; width:300px; padding-left:30px; padding-right:10px;  background-image: url('{% static 'img/selected.png' %}'); max-height:400px; max-width:280px;" >
+                    <div class="card-body" style="padding-top: -5px; z-index:2; position-absolute">
+                    <div class="row t-info" style=max-height=70px;>
+                        <div class="col-4"  >
+                            <span class="fcircular" >
+                            <img src="{% static 'img/descarga.png' %}" class="rounded-circle z-depth-2 shadow" height="55" width="55" alt="100x100" style="padding-bottom: 5px;">
+                            </span>
+                        </div>
+                            <div class="col-8" padding-right="0">
+                            
+                            <div class="row" > 
+                                <div class="col-3" style="color:white">3</h7></div>
+                                <div class="col-9 d-flex justify-content-end" style="padding: top 25;">  
+                                    <div class="row" style="padding-top: 4px;">
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:gold"></i>
+                                        <i class="fas fa-star" style="color:grey"></i>
+                                        <i class="fas fa-star" style="color:grey"></i>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="row" style="height:100px;">
+                            <h5 class="t-tarjeta" style="font-size: 15px; padding-left: 15px; padding-top:10px; color:white;">`+ nombre +`</h5>
+                            </div>
+                            </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col" style="max-height: 50px; ">
+                            <div class="tb-tarjeta rounded" style="background-color: #00d74e;">
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Disponible en urgencias </h5>
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Servicio 24 horas</h5>
+                                <h5 class="ct-tarjeta" style="font-size: 10px; text-align:center; color:white;" >Equipamento completo</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="padding-top: 20px; text-align:center;">
+                            <button class="btn btn-light shadow btne" style="font-size: 10px; display:inline-block;">REGISTRAR EMERGENCIA</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul style="padding-left: 0; padding-top:10px; ">
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">ESPECIALIDADES</a></li>
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">SERVICIOS</a></li>
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">PRECIOS</a></li>
+                                <li style="list-style-type: none;"><a style="color: white; text-decoration:none;">CONTACTO</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                </div>`;
+                document.getElementById('res'+[i]).innerHTML= tarjetas;
+            }  
+        }
+    </script>
+    <script>   
+    </script>
+    <!-- Enrutamiento -->
+    <script>
+            var  control = L.Routing.control({
+                router: L.routing.mapbox('pk.eyJ1IjoiaXRhc3RldGFjbyIsImEiOiJjazlyemdhMWQwMGw4M2VsaWk1YWNoZjE5In0.pOkmZhEiIga2RtfV0rpvqA'),
+                //control.hide();,
+                waypoints: [
+                    L.latLng(latitude,longitude),
+                    L.latLng(dlatitude,dlongitude)
+                ],
+                createMarker: function() { return null; },
+                routeWhileDragging: true,
+                geocoder: L.Control.Geocoder.nominatim()
+            })
+            .on('routesfound', function(e) {
+                var routes = e.routes;
+            });
+            var routeBlock = control.onAdd(myMap);
+            document.getElementById('controls').appendChild(routeBlock);
+
+       //Emergencia registrada  
+        $('.btne').on('click', function () {
+            Swal.fire({
+                title: 'Su urgencia quedó registrada',
+                text: 'Tome todas las precauciones en su trayecto',
+                icon: 'success',
+                confirmButtonText: 'Continuar'
+              });
+        });
+    </script>
+    <!-- //Recalculamiento de coordenadas para movimiento del monito -->
+    <script>
+        function update_position() {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
+                console.log(latitude);
+                console.log(longitude);
+                $('#lating').val(latitude);
+                $('#lnging').val(longitude); 
+                let dudeMarker = L.ExtraMarkers.icon({
+                    icon: 'fa-male',
+                    markerColor: 'blue',
+                    shape: 'circle',
+                    prefix: 'fa'
+                })
+                //myMap.flyTo(pos, 15);
+                var dude = L.marker([latitude,longitude]).addTo(myMap).setIcon(dudeMarker);    
+
+                //if(dude != null) {
+                    //myMap.removeLayer(dude);
+                    //dude.setLatLng([latitude,longitude]).update();
+                    //myMap.addLayer(dude);
+                //}else{
+
+                //   dude = L.marker([latitude,longitude]).addTo(myMap).setIcon(dudeMarker); 
+                //}
+                
+                
+                setTimeout(function() {
+                    //layer.remove();
+                    myMap.removeLayer(dude);
+                }, 4999);
+                setTimeout(update_position, 5000);  
+                
+            });
+        }
+        update_position();
+        //var latitude = "{{latitude}}";
+        //var longitude = "{{longitude}}";
+        recalculate(latitude,longitude);
+        
+        //Petición envío en JSON
+        $('#monito').on('click', function () {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
+                console.log(latitude);
+                console.log(longitude);
+                recalculate(latitude,longitude);       
+                });
+            });    
+            document.getElementById("mySubmit").disabled = true;
+    </script>
+{% endblock %}

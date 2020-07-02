@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+    
+    {% block head_content %}
+    {% endblock %}
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+     <!-- Leaflet -->
+     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+     crossorigin=""></script>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+     crossorigin=""/>
+     <!-- Extramarkers -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.0/leaflet.awesome-markers.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.0.6/dist/css/leaflet.extra-markers.min.css">
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+     <!-- Estilos -->
+     <!-- JS, Popper.js, and jQuery -->
+     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+     <!-- Font Awesome -->
+     <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
+     <script src="https://kit.fontawesome.com/ad8dd70d61.js" crossorigin="anonymous"></script>
+     <!-- Sweet ALert -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+     <!-- Highlight -->
+     <script src="{% static 'leaflet.marker.highlight/index.js'%}"></script>
+     <link href="{% static 'leaflet.marker.highlight/index.css'%}" rel="stylesheet" >
+     <!-- Routing -->
+     <link rel="stylesheet" href="{% static 'js/routing/leaflet-routing-machine.css' %}">
+     <!-- Geo Coding -->
+     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+     <!-- Side Bar -->
+     <link rel="stylesheet" href="{% static 'sidebar-v2-master/css/leaflet-sidebar.css' %}">
+     <!-- Control Bar -->
+     <link rel="stylesheet" href="{% static 'leaflet-control-bar/src/L.Control.Bar.css' %}">
+     <!-- Jquery UI -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+     <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+     <!-- Google Icons  MD -->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <!-- Search box -->
+     <link href="{% static 'leaflet-custom-searchbox/dist/searchbox.min.css' %}" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" crossorigin="anonymous" />
+    <!-- Estilos Propios -->
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %} ">
+
+
+
+</head>
+<body>
+
+   
+
+    
+        {% block container %}
+        <div class="container mt-5">
+
+        </div>
+        {% endblock%}
+{% load static %}
+
+
+</body>
+</html>

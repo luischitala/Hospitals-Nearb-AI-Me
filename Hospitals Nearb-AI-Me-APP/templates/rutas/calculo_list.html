@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_content %}
+
+<title>Bienvenido a Movilízate</title>
+{% load static %}
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+crossorigin=""></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+crossorigin=""/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Estilos -->
+<link rel="stylesheet" href="{% static 'css/estilos.css' %} ">
+
+ <!-- Sweet ALert -->
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+ 
+{% endblock%}
+
+    
+{% block container %}
+    
+   <div class="row">
+    <div class="col" id="contmapa">
+        
+        <div id="myMap" style="height: 1300px; width:1100px; "></div>
+       
+   </div>
+   </div>
+   <div class="row" ">
+       <div class="col-4" style="padding-top:50px; padding-left:50px;">
+        <div class="form-group row">
+                <form  class="form" method="POST" action="resultado" id="datosa">
+                        {% csrf_token %}
+                        <input class="form-control" id="lating" type="hidden" name="lating" required>
+                        <input type="hidden" name="lnging" class="form-control" id="lnging" required>
+
+                        <button id="autopos" type="submit" class="btn btn-primary btn-block">Hospital más cercano!</button>
+                </form>
+       </div>
+       </div>
+        <div class="col-4">
+            <div class="form-group row">
+                <div class="col-xs-4">
+                <form  class="form" method="POST" action="resultado">
+                    
+                    <div class="col-xs-4">
+                        {% csrf_token %}
+                        <label for="latitud">Latitud</label>
+                        <input class="form-control" type="text" name="lating" id="slat" required>
+                        <label for="longitud">Longitud</label>
+                        <input type="text" name="lnging" class="form-control" id="slng" required>
+                        <button type="submit" class="btn btn-primary" style="">Consultar!</button>
+                        <!-- <input id="ingmodelo" type="button" value="Buscar!" class="btn btn-primary btn-lg btn-block" /> -->
+                </form>
+                     </div>
+              </div>
+        </div>
+        </div>
+        <div class="col-4">
+            <div class="selector">
+                <select name="select-location" id="select-location">
+                    <option value="-1">Selecciona uno...</option>
+                    <option value="20.677041,-103.347745">Guadalajara</option>
+                    <option value="20.518943,-103.177678">El Salto</option>
+                    <option value="20.475683,-103.446807">Tlajomulco</option>
+                    <option value="20.639715,-103.311846">Tlaquepaque</option>
+                    <option value="20.720995,-103.391026">Zapopan</option>
+                    <option value="20.624105,-103.242329">Tonalá</option>
+                    
+                </select>
+            </div>
+        </div>
+   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+   <script src="{% static 'js/leaflet.extra-markers.min.js' %}"></script>
+   <script src="{% static 'js/routing/leaflet-routing-machine.min.js' %}"></script>
+   <script src="{% static 'js/output.js' %}"></script>
+   <script src="{% static 'js/script_blank.js'%}"></script>
+   <script src="{% static 'js/movilizate.js' %}"></script>
+   <div class="loader hidden" id="loader">
+        <img src="{% static "img/carga.gif" %}" alt="">
+   </div>
+   <script> 
+     //Cargar la animación en el formulario
+    $(document).ready(function(){
+        $("#datosa").on("submit", function(){
+            var element = document.getElementById("loader");
+            element.classList.remove("hidden");
+            var mapa = document.getElementById("contmapa");
+            mapa.remove()
+            //const loader = document.querySelector(".loader");
+            //loader.className -= " hidden";
+        });//submit
+      });//document ready
+
+      function myFunction() {
+        var element = document.getElementById("myDIV");
+        element.classList.remove("mystyle");
+      }
+
+      movSelector();
+      
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+        
+        function success(pos) {
+          var crd = pos.coords;
+        
+          console.log('Your current position is:');
+          console.log('Latitude : ' + crd.latitude);
+          console.log('Longitude: ' + crd.longitude);
+          console.log('More or less ' + crd.accuracy + ' meters.');
+          latitud = parseFloat(crd.latitude);
+          longitud = parseFloat(crd.longitude);
+          $('#lating').val(latitud);
+          $('#lnging').val(longitud);
+          var latitud;
+          var longitud;
+          console.log(latitud);
+          console.log(longitud);
+    
+        }
+        
+        function error(err) {
+          console.warn('ERROR(' + err.code + '): ' + err.message);
+          
+        };
+        navigator.geolocation.getCurrentPosition(success, error, options);
+      
+      
+    </script>
+{% endblock %}
