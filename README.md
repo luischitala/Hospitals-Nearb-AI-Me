@@ -1,10 +1,11 @@
 # Hospitals Nearb-AI Me :hospital: :syringe:
 
-Optimización de traslados a clínicas de emergencia.
+Transporting optimization towards emergency hospitals.
 
 ## About :books:
 
-Las emergencias son situaciones donde ocurren circunstancias que incluso llegan a poner en riesgo la vida. Aún así estas situaciones son muy comunes en la cotidianidad, registrándose en los primeros tres meses del año actual en México más de 500 mil llamadas médicas. Ante esto, se vuelve necesario encontrar métodos que nos ayuden a mitigar esta problemática. Por otro lado, los métodos de Machine Learning nos han mostrado soluciones óptimas en variedad de situaciones, por lo que en este trabajo se usan los métodos “Unsupervised Nearest Neighbors Clustering” y “Bayesian Ridge Regression” para encontrar los hospitales ideales para el usuario con base en la distancia y el tiempo de traslado, los consultorios y cantidad de médicos en estos. Además, se desarrolló una aplicación web con Django para la interfaz del usuario con el objetivo de que la aplicación fuera más personalizada y que pudiera ser consultada en un teléfono móvil. 
+Emergencies are situations where circumstances that could even compromise life could easily happen. Even if these situations are very common in our ordinariness, registering in Mexico more than 500 hundred thousand medical calls on the first three months of the current year. All this in mind, it becomes necessary to find methods that could help us to mitigate this problems. Conversely, the ML models have shown us, optimal solutions in a variety of situations, that's why in this work the following methods: "Unsupervised Nearest Neighbors Clusterings" a & "Bayesian Ridge Regression" were used to find the ideal hospitals for the user, based on the distance and the transporting time, health clinics and the quantity of doctors in them. Additionally, a Django Web-App has been developed, with the objective of allowing a more personalized and friendly UI interaction, that can could be consulted in a mobile device.
+
 
 ### Prerequisites (Model) 
 
