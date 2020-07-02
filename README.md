@@ -85,6 +85,14 @@ You can run the application (With manual coords due dataset limitations) by clic
 
 ![Index](https://github.com/luischitala/Hospitals-Nearb-AI-Me/blob/master/Model%20%26%20Data%20Saturdays%20AI%20-%20Equipo%202/Image-UI/Demo/index.PNG)
 
+### Control Page
+
+![Controls](https://github.com/luischitala/Hospitals-Nearb-AI-Me/blob/master/Model%20%26%20Data%20Saturdays%20AI%20-%20Equipo%202/Image-UI/Demo/controls.PNG)
+
+### Result 
+
+![Results](https://github.com/luischitala/Hospitals-Nearb-AI-Me/blob/master/Model%20%26%20Data%20Saturdays%20AI%20-%20Equipo%202/Image-UI/Demo/results.PNG)
+
 
 ## License
 
