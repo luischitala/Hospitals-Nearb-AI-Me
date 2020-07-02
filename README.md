@@ -81,6 +81,10 @@ You can follow the Deployment tutorial for python by consulting [here](https://w
 
 You can run the application (With manual coords due dataset limitations) by clicking [here](https://movilizate.herokuapp.com/).
 
+### Index
+
+![Index](https://github.com/luischitala/Hospitals-Nearb-AI-Me/blob/master/Model%20%26%20Data%20Saturdays%20AI%20-%20Equipo%202/Image-UI/Demo/index.PNG)
+
 
 ## License
 
