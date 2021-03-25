@@ -63,7 +63,7 @@ python-decouple==3.3
 pytz==2020.1
 
 pywinpty==0.5.7
-PyYAML==5.3.1
+PyYAML==5.4
 pyzmq==18.1.1
 requests==2.9.1
 scikit-learn==0.23.1
