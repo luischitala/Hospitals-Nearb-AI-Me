@@ -10,7 +10,7 @@ decorator==4.4.2
 defusedxml==0.6.0
 diff-match-patch==20181111
 dj-database-url==0.5.0
-Django==3.0.3
+Django==3.0.14
 django-excel==0.0.10
 -e git+https://github.com/django-import-export/django-import-export.git@5b83f66f683f4d12bb7fa0f99a73dd82423788dd#egg=django_import_export
 django-npm==1.0.0
